@@ -1,5 +1,5 @@
 # Sistema de Reservas Academicas
-este flujo tiene como objetivo reservar aquellos salones segun esten disponibles, si en caso dado el usuario deseea una extencio de dias/horas se realiza una solicitud hacia direccion, haciendo que esta misma rechaze u apruebe las solicitudes de igual manera se hace una validacion y extracion de datos a partir de la imagen de comprobante usando un modelo LLM con Anthropic. 
+este flujo tiene como objetivo reservar aquellos salones segun esten disponibles, si en caso dado el usuario deseea una extencio de dias/horas se realiza una solicitud hacia direccion, haciendo que esta misma rechaze u apruebe las solicitudes de igual manera se hace una validacion y extracion de datos a partir de la imagen de comprobante usando un modelo LLM (Anthropic). 
 
 # Diagrama General 
 ```mermaid
