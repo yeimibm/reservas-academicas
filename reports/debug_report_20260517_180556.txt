@@ -1,0 +1,37 @@
+
+REPORTE DE DEBUGGING
+====================
+Generado: 2026-05-17 18:05:56
+
+INFORMACIÓN DEL SISTEMA:
+- OS: win32
+- Python: 3.13.1 (tags/v3.13.1:0671451, Dec  3 2024, 19:06:28) [MSC v.1942 64 bit (AMD64)]
+
+PASOS PARA DEBUGGING:
+1. Verifica que el servidor está corriendo:
+   cd apps/web && npm run dev
+
+2. Abre DevTools (F12) en el navegador
+
+3. Copia el error exacto en la consola
+
+4. Usa esta herramienta para identificar el tipo
+
+5. Sigue la solución propuesta
+
+6. Actualiza el código necesario
+
+7. Ejecuta la prueba de nuevo
+
+ARCHIVOS IMPORTANTES:
+- test_automation.py     → Pruebas básicas
+- test_advanced.py       → Pruebas avanzadas
+- test_config.py         → Configuración
+- DEBUG_GUIDE.md         → Guía de debugging
+- screenshots/           → Capturas de pantalla
+
+RECURSOS:
+- DevTools (F12)                → Inspeccionar elementos
+- test_config.py               → Cambiar configuración
+- apps/web/src/                → Código fuente frontend
+- apps/api/src/                → Código fuente backend

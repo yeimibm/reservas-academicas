@@ -31,4 +31,9 @@ flowchart TD
 - API health: `http://localhost:3001/health`
 - RabbitMQ management: `http://localhost:15672`
 
+## Implementación de pruebas automatizadas con Selenium 
+El proyecto incluye un conjunto de pruebas automatizadas utilizando Selenium para garantizar la calidad y funcionalidad del sistema de reservas académicas. 
+
+al finalzar la ejecucion de las pruebas se genera un reporte en formato HTML que se encuentra en la carpeta `reports/` con un nombre que incluye la fecha y hora de ejecución, por ejemplo: `test_report_20260517_154435.html`.
+
 

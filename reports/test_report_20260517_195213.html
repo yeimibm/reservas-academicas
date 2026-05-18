@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Pruebas Automatizadas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+
+        .stat {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .passed { color: #28a745; }
+        .failed { color: #dc3545; }
+        .error { color: #ffc107; }
+        .skipped { color: #6c757d; }
+
+        .content {
+            padding: 30px;
+        }
+
+        .test-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .test-table th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .test-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .test-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .status-passed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-error {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .error-details {
+            background: #f8f9fa;
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .error-details h3 {
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            background: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            color: #666;
+        }
+
+        .solution {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .solution h4 {
+            color: #155724;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .solution p {
+            color: #155724;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .solution ol {
+            margin-left: 20px;
+            color: #155724;
+        }
+
+        .solution li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .files-to-check {
+            background: #e7f3ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+
+        .files-to-check strong {
+            color: #0066cc;
+        }
+
+        .files-to-check ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .files-to-check li {
+            color: #0066cc;
+            margin-bottom: 5px;
+        }
+
+        .traceback {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            color: #333;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .no-errors {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 8px;
+            color: #155724;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .test-table {
+                font-size: 0.9em;
+            }
+
+            .test-table th,
+            .test-table td {
+                padding: 10px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Reporte de Pruebas Automatizadas</h1>
+            <p>Sistema de Reservas Académicas</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" style="color: #0066cc;">20</div>
+                <div class="stat-label">Total de Pruebas</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value passed">✓ 17</div>
+                <div class="stat-label">Exitosas</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value failed">✗ 1</div>
+                <div class="stat-label">Fallidas</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value error">⚠ 2</div>
+                <div class="stat-label">Errores</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" style="color: #666;">⏱ 185.43s</div>
+                <div class="stat-label">Duración</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" style="color: #dc3545;">
+                    ❌ FAIL
+                </div>
+                <div class="stat-label">Estado General</div>
+            </div>
+        </div>
+
+        <div class="content">
+<div class="section-title">📋 Resultados Detallados</div><table class="test-table"><thead><tr><th>Prueba</th><th>Estado</th><th>Duración</th><th>Detalles</th></tr></thead><tbody><tr><td><strong>(test_automation.TestLogin.test_01_page_loads</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>6.19s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestLogin.test_02_login_form_exists</strong></td><td><span class="status-badge status-error">ERROR</span></td><td>13.60s</td><td><span style="color: #dc3545; cursor: pointer;" onclick="toggleDetails(this)">Ver detalles ↓</span></td></tr><tr style="display: none;" class="error-row"><td colspan="4"><div class="error-details"><h3>❌ ERROR</h3><div class="error-message"><strong>Error:</strong><br>Message: 
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff6b8461e35+2e8d45]
+	chromedriver!GetHandleVerifier [0x7ff6b818e6c0+155d0]
+	chromedriver!(No symbol) [0x7ff6b7edd57d]
+	chromedriver!(No symbol) [0x7ff6b7f3767e]
+	chromedriver!(No symbol) [0x7ff6b7f3798c]
+	chromedriver!(No symbol) [0x7ff6b7f880c7]
+	chromedriver!(No symbol) [0x7ff6b7f84c63]
+	chromedriver!(No symbol) [0x7ff6b7f29d58]
+	chromedriver!(No symbol) [0x7ff6b7f2ac43]
+	chromedriver!GetHandleVerifier [0x7ff6b848dab9+3149c9]
+	chromedriver!GetHandleVerifier [0x7ff6b848802b+30ef3b]
+	chromedriver!GetHandleVerifier [0x7ff6b84ac872+333782]
+	chromedriver!GetHandleVerifier [0x7ff6b81ab785+32695]
+	chromedriver!GetHandleVerifier [0x7ff6b81b42bc+3b1cc]
+	chromedriver!GetHandleVerifier [0x7ff6b8197f24+1ee34]
+	chromedriver!GetHandleVerifier [0x7ff6b81980b4+1efc4]
+	chromedriver!GetHandleVerifier [0x7ff6b817bf27+2e37]
+	KERNEL32!BaseThreadInitThunk [0x7ffd0888e957+17]
+	ntdll!RtlUserThreadStart [0x7ffd0a92427c+2c]
+</div><div class="traceback"><strong>Traceback completo:</strong><br>Traceback (most recent call last):
+  File "C:\Users\yeimi\Desktop\reserva academicas\test_automation.py", line 109, in test_02_login_form_exists
+    form = self.find_element(By.TAG_NAME, "form")
+  File "C:\Users\yeimi\Desktop\reserva academicas\test_automation.py", line 71, in find_element
+    return wait.until(EC.presence_of_element_located((by, value)))
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yeimi\AppData\Local\Programs\Python\Python313\Lib\site-packages\selenium\webdriver\support\wait.py", line 121, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff6b8461e35+2e8d45]
+	chromedriver!GetHandleVerifier [0x7ff6b818e6c0+155d0]
+	chromedriver!(No symbol) [0x7ff6b7edd57d]
+	chromedriver!(No symbol) [0x7ff6b7f3767e]
+	chromedriver!(No symbol) [0x7ff6b7f3798c]
+	chromedriver!(No symbol) [0x7ff6b7f880c7]
+	chromedriver!(No symbol) [0x7ff6b7f84c63]
+	chromedriver!(No symbol) [0x7ff6b7f29d58]
+	chromedriver!(No symbol) [0x7ff6b7f2ac43]
+	chromedriver!GetHandleVerifier [0x7ff6b848dab9+3149c9]
+	chromedriver!GetHandleVerifier [0x7ff6b848802b+30ef3b]
+	chromedriver!GetHandleVerifier [0x7ff6b84ac872+333782]
+	chromedriver!GetHandleVerifier [0x7ff6b81ab785+32695]
+	chromedriver!GetHandleVerifier [0x7ff6b81b42bc+3b1cc]
+	chromedriver!GetHandleVerifier [0x7ff6b8197f24+1ee34]
+	chromedriver!GetHandleVerifier [0x7ff6b81980b4+1efc4]
+	chromedriver!GetHandleVerifier [0x7ff6b817bf27+2e37]
+	KERNEL32!BaseThreadInitThunk [0x7ffd0888e957+17]
+	ntdll!RtlUserThreadStart [0x7ffd0a92427c+2c]
+
+</div></div></td></tr><tr><td><strong>(test_automation.TestLogin.test_03_login_invalid_credentials</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>15.47s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestLogin.test_04_login_form_validation</strong></td><td><span class="status-badge status-error">ERROR</span></td><td>13.55s</td><td><span style="color: #dc3545; cursor: pointer;" onclick="toggleDetails(this)">Ver detalles ↓</span></td></tr><tr style="display: none;" class="error-row"><td colspan="4"><div class="error-details"><h3>❌ ERROR</h3><div class="error-message"><strong>Error:</strong><br>Message: no such element: Unable to locate element: {"method":"tag name","selector":"button"}
+  (Session info: chrome=148.0.7778.168); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff6b8461e35+2e8d45]
+	chromedriver!GetHandleVerifier [0x7ff6b818e6c0+155d0]
+	chromedriver!(No symbol) [0x7ff6b7edd57d]
+	chromedriver!(No symbol) [0x7ff6b7f3767e]
+	chromedriver!(No symbol) [0x7ff6b7f3798c]
+	chromedriver!(No symbol) [0x7ff6b7f880c7]
+	chromedriver!(No symbol) [0x7ff6b7f84c63]
+	chromedriver!(No symbol) [0x7ff6b7f29d58]
+	chromedriver!(No symbol) [0x7ff6b7f2ac43]
+	chromedriver!GetHandleVerifier [0x7ff6b848dab9+3149c9]
+	chromedriver!GetHandleVerifier [0x7ff6b848802b+30ef3b]
+	chromedriver!GetHandleVerifier [0x7ff6b84ac872+333782]
+	chromedriver!GetHandleVerifier [0x7ff6b81ab785+32695]
+	chromedriver!GetHandleVerifier [0x7ff6b81b42bc+3b1cc]
+	chromedriver!GetHandleVerifier [0x7ff6b8197f24+1ee34]
+	chromedriver!GetHandleVerifier [0x7ff6b81980b4+1efc4]
+	chromedriver!GetHandleVerifier [0x7ff6b817bf27+2e37]
+	KERNEL32!BaseThreadInitThunk [0x7ffd0888e957+17]
+	ntdll!RtlUserThreadStart [0x7ffd0a92427c+2c]
+</div><div class="solution"><h4>💡 Elemento No Encontrado</h4><p>El selector CSS o XPATH no pudo localizar el elemento en la página</p><h4 style="font-size: 0.95em; margin-top: 15px;">1. Verificar el selector con DevTools</h4><ol><li>Abre DevTools (F12) en el navegador</li><li>Ve a la pestaña 'Inspector'</li><li>Haz clic en la lupa y luego en el elemento</li><li>Copia el selector CSS correcto</li><li>Actualiza el test con el selector correcto</li></ol><h4 style="font-size: 0.95em; margin-top: 15px;">2. Verificar que el elemento existe</h4><ol><li>Abre el navegador en http://localhost:3000</li><li>¿Ves el elemento que busca la prueba?</li><li>Si NO existe: Implementar en apps/web/src/</li><li>Si SÍ existe: Revisar selector en test_automation.py</li></ol><div class="files-to-check"><strong>📁 Archivos a revisar:</strong><ul><li>test_automation.py (selector incorrecto)</li><li>apps/web/src/ (elemento no implementado)</li></ul></div></div><div class="traceback"><strong>Traceback completo:</strong><br>Traceback (most recent call last):
+  File "C:\Users\yeimi\Desktop\reserva academicas\test_automation.py", line 138, in test_04_login_form_validation
+    submit = self.driver.find_element(By.TAG_NAME, "button")
+  File "C:\Users\yeimi\AppData\Local\Programs\Python\Python313\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 868, in find_element
+    return self.execute(Command.FIND_ELEMENT, {"using": by, "value": value})["value"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yeimi\AppData\Local\Programs\Python\Python313\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 468, in execute
+    self.error_handler.check_response(response)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\yeimi\AppData\Local\Programs\Python\Python313\Lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 232, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {"method":"tag name","selector":"button"}
+  (Session info: chrome=148.0.7778.168); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff6b8461e35+2e8d45]
+	chromedriver!GetHandleVerifier [0x7ff6b818e6c0+155d0]
+	chromedriver!(No symbol) [0x7ff6b7edd57d]
+	chromedriver!(No symbol) [0x7ff6b7f3767e]
+	chromedriver!(No symbol) [0x7ff6b7f3798c]
+	chromedriver!(No symbol) [0x7ff6b7f880c7]
+	chromedriver!(No symbol) [0x7ff6b7f84c63]
+	chromedriver!(No symbol) [0x7ff6b7f29d58]
+	chromedriver!(No symbol) [0x7ff6b7f2ac43]
+	chromedriver!GetHandleVerifier [0x7ff6b848dab9+3149c9]
+	chromedriver!GetHandleVerifier [0x7ff6b848802b+30ef3b]
+	chromedriver!GetHandleVerifier [0x7ff6b84ac872+333782]
+	chromedriver!GetHandleVerifier [0x7ff6b81ab785+32695]
+	chromedriver!GetHandleVerifier [0x7ff6b81b42bc+3b1cc]
+	chromedriver!GetHandleVerifier [0x7ff6b8197f24+1ee34]
+	chromedriver!GetHandleVerifier [0x7ff6b81980b4+1efc4]
+	chromedriver!GetHandleVerifier [0x7ff6b817bf27+2e37]
+	KERNEL32!BaseThreadInitThunk [0x7ffd0888e957+17]
+	ntdll!RtlUserThreadStart [0x7ffd0a92427c+2c]
+
+</div></div></td></tr><tr><td><strong>(test_automation.TestNavigation.test_01_header_navigation_exists</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>6.01s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestNavigation.test_02_page_title_exists</strong></td><td><span class="status-badge status-failed">FAILED</span></td><td>3.33s</td><td><span style="color: #dc3545; cursor: pointer;" onclick="toggleDetails(this)">Ver detalles ↓</span></td></tr><tr style="display: none;" class="error-row"><td colspan="4"><div class="error-details"><h3>❌ FAILED</h3><div class="error-message"><strong>Error:</strong><br>False is not true</div><div class="traceback"><strong>Traceback completo:</strong><br>Traceback (most recent call last):
+  File "C:\Users\yeimi\Desktop\reserva academicas\test_automation.py", line 269, in test_02_page_title_exists
+    self.assertTrue(len(title) &gt; 0)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+</div></div></td></tr><tr><td><strong>(test_automation.TestNavigation.test_03_multiple_page_navigation</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>22.24s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestDashboard.test_01_dashboard_navigation</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>5.20s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestReservations.test_01_reservations_page_navigation</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>7.07s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestReservations.test_02_reservation_form_elements</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>15.72s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestReservations.test_03_reservation_history_page</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>6.15s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestPaymentReceipts.test_01_receipts_page_navigation</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>5.80s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestPaymentReceipts.test_02_receipt_upload_form</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>15.95s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestReviews.test_01_reviews_page_navigation</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>5.76s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestAdmin.test_01_admin_page_navigation</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>5.93s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestResponsiveness.test_01_desktop_view</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>5.75s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestResponsiveness.test_02_mobile_view</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>6.39s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestResponsiveness.test_03_tablet_view</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>6.23s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestPerformance.test_01_page_load_time</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>6.28s</td><td>✅ OK</td></tr><tr><td><strong>(test_automation.TestPerformance.test_02_dashboard_load_time</strong></td><td><span class="status-badge status-passed">PASSED</span></td><td>5.79s</td><td>✅ OK</td></tr></tbody></table><div class="section-title">🔍 Resumen de Errores</div><div style="background: #fff3cd; padding: 15px; border-radius: 8px; color: #856404;"><strong>3 prueba(s) necesitan atención.</strong><br>Revisa los detalles arriba y sigue las soluciones sugeridas.</div>
+        </div>
+
+        <div class="footer">
+            <p>🧪 Reporte generado automáticamente por el sistema de pruebas automatizadas</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                Para más información: <a href="https://github.com/anthropics/claude-code" style="color: #667eea;">Ver documentación</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function toggleDetails(element) {
+            const row = element.closest('tr').nextElementSibling;
+            if (row && row.classList.contains('error-row')) {
+                if (row.style.display === 'none') {
+                    row.style.display = 'table-row';
+                    element.textContent = 'Ocultar ↑';
+                } else {
+                    row.style.display = 'none';
+                    element.textContent = 'Ver detalles ↓';
+                }
+            }
+        }
+
+        // Auto-expandir errores al cargar
+        document.querySelectorAll('.error-row').forEach((row, index) => {
+            if (index < 3) {  // Mostrar solo los primeros 3 errores
+                row.style.display = 'table-row';
+                const link = row.previousElementSibling.querySelector('[onclick*="toggleDetails"]');
+                if (link) link.textContent = 'Ocultar ↑';
+            }
+        });
+    </script>
+</body>
+</html>
